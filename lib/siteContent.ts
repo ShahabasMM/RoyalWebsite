@@ -888,7 +888,7 @@ export async function getStudentZoneMenu(): Promise<StudentZoneMenu> {
 }
 
 /* ==========================================================================
-   Student Zone resources (Prospectus, Question Bank)
+   Student Zone resources (Prospectus, Magazine)
 
    Downloadable documents staff publish for students. Same philosophy as the
    menu: read `site_student_resources` when it exists, otherwise return an empty
@@ -910,7 +910,7 @@ export type StudentResource = {
   year: string | null;
 };
 
-export type StudentResourceKind = "prospectus" | "question-bank" | "magazine";
+export type StudentResourceKind = "prospectus" | "magazine";
 
 type ResourceRow = {
   id: string;

@@ -31,14 +31,6 @@ export function buildStudentZoneItems(
   rows: StudentZoneMenuItemRow[],
 ): StudentZoneItem[] {
   return rows
-    // Keep legacy CMS rows/data intact, but stop exposing the retired page in
-    // the public navigation until its content is intentionally reintroduced.
-    .filter((row) => {
-      const label = row.label?.trim().toLowerCase();
-      const href = row.href?.trim().toLowerCase();
-      return label !== "question bank" && href !== "/student-zone/question-bank" &&
-        !href?.startsWith("/student-zone/question-bank/");
-    })
     .map((row, index): StudentZoneItem | null => {
       const label = row.label?.trim();
 

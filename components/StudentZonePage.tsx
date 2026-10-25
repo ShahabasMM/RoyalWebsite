@@ -28,8 +28,7 @@ function formatDate(value: string): string {
 
 /**
  * Shared, deliberately minimal layout for the non-specialised Student Zone
- * pages (Prospectus, NSS, Students' Union, College Magazine,
- * File Your Grievance, Question Bank).
+ * pages (Prospectus, NSS, Students' Union, College Magazine).
  *
  * It renders only what the data layer hands it: a breadcrumb and title, the
  * page's ordered sections, an optional document list and optional helpful

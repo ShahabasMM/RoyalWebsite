@@ -14,6 +14,11 @@ const nextConfig: NextConfig = {
         destination: '/student-zone',
         permanent: true,
       },
+      {
+        source: '/student-zone/question-bank',
+        destination: '/student-zone',
+        permanent: true,
+      },
     ]
   },
   images: {

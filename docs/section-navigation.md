@@ -1,21 +1,43 @@
 # Section (secondary) navigation
 
-The contextual navigation bar that appears under the primary navbar and the
-announcement ticker on every main section page — the section name on the left,
-a divider, then that section's submenu links in a single row.
+The contextual navigation for every main section page. On desktop it is a
+sticky left sidebar beside the page content; on tablet and mobile it stays above
+the content as the original horizontal bar. Home, News and Contact belong to no
+section, so they render no secondary navigation at all.
 
 ## Where it lives
 
 | Concern | File |
 | --- | --- |
 | Section + item configuration | `content/sectionNav.ts` |
-| The bar itself | `components/SectionSubnav.tsx` |
+| The menu itself | `components/SectionSubnav.tsx` |
+| Route-aware sidebar frame | `components/SectionShell.tsx` |
 | Mount point (once, site-wide) | `app/layout.tsx`, right after `<FlashNewsTicker />` |
 | Styles | `app/globals.css`, block headed "Section secondary navigation" |
 
-A page does **not** opt in or wire anything up. `SectionSubnav` is a client
+A page does **not** opt in or wire anything up. `SectionShell` is a client
 component rendered once from the root layout; it reads the current route with
-`usePathname()` and decides which section (if any) to show.
+`usePathname()` and decides which section (if any) to show. Inside a section it
+wraps `SectionSubnav` in a sticky `<aside>` and the page in a `.section-shell-main`
+column. Outside every section it returns the children untouched.
+
+## Layout
+
+- **Desktop (≥ 1100px, matching the site breakpoint):** the shell is the
+  viewport width minus 40px (20px gutters each side). The banner spans the full
+  shell width in its own grid row above a second row containing a
+  `clamp(248px, 20vw, 280px)` left sidebar and the page content. The banner's
+  inner copy is inset by the sidebar column so its title and breadcrumb stay on
+  the same left edge as the content below. The sidebar card is `position:
+  sticky` with `top: 100px` (82px sticky header plus 18px breathing room), and
+  scrolls internally when its menu is taller than the viewport. It stays inside
+  the shell, so it never overlaps the footer.
+- **Tablet / mobile (< 1100px):** the shell is a plain block. The menu keeps its
+  existing position directly above the content (the stacked navy bar below
+  900px), and all existing sidebar styles are scoped to the desktop media query.
+- **Excluded routes:** home, `/news` and `/contact` (plus `/privacy`, `/terms`,
+  `/programs/*`, `/apps` and the student app) match no section, so they render
+  exactly as before.
 
 ## How a section is chosen
 

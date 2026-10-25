@@ -142,18 +142,7 @@ export default function HomePage({
                 application" and "Talk to admissions" in the admissions panel
                 are the only home page buttons, so the hero leads with copy
                 and the proof line instead. */}
-            <div className="hero-proof">
-              <div className="proof-avatars" aria-hidden="true">
-                <span>RC</span>
-                <span>01</span>
-                <span>02</span>
-              </div>
-              <span>Preparing thoughtful leaders since 2010</span>
-            </div>
-          </div>
-          <div className="hero-badge">
-            <strong>20<span>+</span></strong>
-            <span>years of learning and growth</span>
+            <div className="hero-proof" />
           </div>
         </div>
       </section>

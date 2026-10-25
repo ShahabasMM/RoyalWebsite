@@ -29,7 +29,7 @@ import {
      - When the CMS is unconfigured, a table is missing, or the page has no
        published rows, the loader falls back to the site's own verified typed
        content so no Student Zone page can ever go blank.
-     - Document lists (Prospectus, Question Bank, Magazine) never invent a
+     - Document lists (Prospectus, Magazine) never invent a
        download: with nothing published the page renders a deliberate empty
        state instead.
 
@@ -86,7 +86,6 @@ export const STUDENT_ZONE_PAGE_SLUGS = [
   "college-magazine",
   "campus-culture-gallery",
   "library",
-  "question-bank",
 ] as const;
 
 /**
@@ -100,7 +99,6 @@ export const EXPLICIT_STUDENT_ZONE_SLUGS = [
   "prospectus",
   "nss",
   "library",
-  "question-bank",
   "student-clubs",
   "campus-culture-gallery",
 ] as const;
@@ -193,19 +191,6 @@ const FALLBACKS: Record<
         heading: "The prospectus, when you need it.",
         paragraphs: [
           "The prospectus sets out the programmes, eligibility, admission procedure and campus facilities in full. The latest college and University of Calicut prospectuses are published here as they are issued. For the programmes currently offered, see the programmes page.",
-        ],
-      }),
-    ],
-  },
-
-  "question-bank": {
-    title: "Question Bank",
-    lead: "Past papers and revision notes to prepare for examinations.",
-    sections: [
-      emptySection({
-        heading: "Practise with past papers.",
-        paragraphs: [
-          "The question bank collects previous question papers and revision material by programme and semester. Papers are published here as the departments release them. Working through past papers is one of the most effective ways to prepare for both internal and university examinations.",
         ],
       }),
     ],

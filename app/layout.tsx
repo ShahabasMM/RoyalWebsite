@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import FlashNewsTicker from "@/components/FlashNewsTicker";
-import SectionSubnav from "@/components/SectionSubnav";
+import SectionShell from "@/components/SectionShell";
 import { SiteLiveProvider } from "@/components/SiteLiveProvider";
 import VisitorProvider from "@/components/VisitorProvider";
 import { getFlashNews, getProgrammes, getSiteSettings, getStudentZoneMenu } from "@/lib/siteContent";
@@ -144,9 +144,7 @@ export default async function RootLayout({
 
             <FlashNewsTicker />
 
-            <SectionSubnav />
-
-            {children}
+            <SectionShell>{children}</SectionShell>
 
             <Footer />
           </VisitorProvider>

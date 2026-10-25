@@ -12,8 +12,8 @@ The public site reads four things from Supabase, each with a hardcoded fallback:
 
 | Concern | Website reader | Fallback | Table |
 | --- | --- | --- | --- |
-| Student Zone menu (ten links) | `getStudentZoneMenu()` in `lib/siteContent.ts` | `content/studentZoneMenu.ts` | `site_menu_items` |
-| Prospectus / Question Bank / Magazine downloads | `getStudentResources(kind)` in `lib/siteContent.ts` | empty list | `site_student_resources` |
+| Student Zone menu (seven links) | `getStudentZoneMenu()` in `lib/siteContent.ts` | `content/studentZoneMenu.ts` | `site_menu_items` |
+| Prospectus / Magazine downloads | `getStudentResources(kind)` in `lib/siteContent.ts` | empty list | `site_student_resources` |
 | Page body content (ordered sections) | `getStudentZonePage(slug)` in `lib/studentZoneContent.ts` | the site's typed content | `site_page_sections` |
 | Page metadata (title, summary, updated) | `getStudentZonePageMeta(slug)` in `lib/studentZoneContent.ts` | the site's typed content | `site_pages` |
 | Students' Union member profiles | `getStudentsUnionMembers()` in `lib/studentZoneContent.ts` | empty list (page shows its empty state) | `site_page_sections` |
@@ -41,7 +41,7 @@ Behaviour that the schema must not break:
   not.** `getStudentZonePage` renders whatever published sections exist for a
   page; when there are none it keeps the site0027s  typed copy. That way applying
   the migration cannot blank every page before staff have seeded anything.
-  Document sub-lists (prospectus, question bank, magazine editions) still show a
+  Document sub-lists (prospectus and magazine editions) still show a
   deliberate empty state when nothing is published.
 - **Unusable rows are skipped.** A row with no label, or with neither a usable
   internal `href` nor a usable external `external_url`, is dropped rather than
@@ -98,15 +98,15 @@ Column-to-code mapping (`StudentZoneMenuItemRow`):
 
 ## 3. Table: `site_student_resources`
 
-Downloadable documents shown on `/student-zone/prospectus`,
-`/student-zone/question-bank` and `/student-zone/college-magazine`. The website
-filters by `kind` (one of `prospectus`, `question-bank`, `magazine`),
+Downloadable documents shown on `/student-zone/prospectus` and
+`/student-zone/college-magazine`. The website
+filters by `kind` (one of `prospectus`, `magazine`),
 `is_published = true`, ordered by `display_order`.
 
 ```sql
 create table if not exists public.site_student_resources (
   id            uuid primary key default gen_random_uuid(),
-  kind          text not null,              -- 'prospectus' | 'question-bank' | 'magazine'
+  kind          text not null,              -- 'prospectus' | 'magazine'
   title         text not null,
   description   text,
   label         text,                       -- small badge, e.g. 'College', 'Semester 3'
@@ -147,7 +147,7 @@ Card headings and descriptions are fixed page copy, not database fields — the
 row's own title and badge are only read for binding. With no bound published
 row, the card still renders with its button disabled and a "Currently
 unavailable" note: no URL is ever invented, borrowed from the other card, or
-hardcoded. `question-bank` and `magazine` pages are unaffected — they keep
+hardcoded. The `magazine` page is unaffected — it keeps
 listing every published row of their kind.
 
 ## 3b. Table: `site_page_sections`
@@ -332,12 +332,11 @@ values
   ('student_zone','Students'' Union','/student-zone/students-union',null,4,true),
   ('student_zone','College Magazine','/student-zone/college-magazine',null,5,true),
   ('student_zone','Campus Culture & Gallery','/student-zone/campus-culture-gallery',null,6,true),
-  ('student_zone','Library','/student-zone/library',null,8,true),
-  ('student_zone','Question Bank','/student-zone/question-bank',null,9,true);
+  ('student_zone','Library','/student-zone/library',null,8,true);
 ```
 
 No seed is provided for `site_student_resources` or `site_page_sections`: there
-are no verified prospectus, question-bank or magazine documents to publish, and
+are no verified prospectus or magazine documents to publish, and
 no body copy that is not already typed in the site. Inventing either is exactly
 what this project avoids. The pages keep their typed content until staff publish
 real rows, and the document lists show a deliberate empty state until real
@@ -396,7 +395,7 @@ entity):
   table: "site_student_resources",
   icon: "file",
   group: "Student Zone",
-  description: "Prospectus, question-bank and magazine documents for students.",
+  description: "Prospectus and magazine documents for students.",
   permission: "website.content",
   publishField: "is_published",
   defaultLayout: "table",
@@ -404,7 +403,7 @@ entity):
   searchFields: ["title", "kind", "label", "year"],
   fields: [
     { name: "kind", label: "Type", type: "select", required: true,
-      options: ["prospectus", "question-bank", "magazine"] },
+      options: ["prospectus", "magazine"] },
     { name: "title", label: "Title", type: "text", required: true },
     { name: "description", label: "Description", type: "textarea", rows: 3, full: true },
     { name: "label", label: "Badge", type: "text",

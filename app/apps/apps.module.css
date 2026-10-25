@@ -1,0 +1,47 @@
+.page {
+  min-height: 54vh;
+  padding: clamp(54px, 7vw, 88px) 0 clamp(72px, 9vw, 116px);
+  background: var(--bg);
+}
+
+.container { width: min(1120px, 100% - 48px); margin: 0 auto; }
+.intro { margin: 0 0 34px; }
+.kicker { color: var(--blue); font-size: 10px; font-weight: 700; letter-spacing: 1.65px; line-height: 1.4; text-transform: uppercase; }
+.intro h1 { margin: 10px 0 8px; color: var(--navy); font-size: clamp(34px, 4.6vw, 48px); font-weight: 600; letter-spacing: -1.9px; line-height: 1.12; }
+.platformGrid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: stretch; gap: 18px; }
+.platformPanel { min-width: 0; padding: 24px; border: 1px solid var(--line); border-radius: 16px; background: var(--surface); box-shadow: var(--shadow-sm); }
+.platformHeader { display: flex; align-items: center; gap: 13px; padding-bottom: 18px; border-bottom: 1px solid var(--line); }
+.platformIcon { display: grid; width: 42px; height: 42px; flex: 0 0 auto; place-items: center; border: 1px solid #dce6f3; border-radius: 12px; color: var(--navy); background: #f2f6fc; }
+.platformHeader h2 { margin: 0; color: var(--navy); font-size: 16px; font-weight: 600; letter-spacing: -.25px; }
+.platformHeader p { margin: 3px 0 0; color: var(--muted); font-size: 11px; line-height: 1.5; }
+.appList { display: grid; gap: 12px; padding-top: 16px; }
+.appCard { display: grid; grid-template-columns: 56px minmax(0, 1fr) auto; align-items: center; gap: 14px; min-width: 0; padding: 15px; border: 1px solid var(--line); border-radius: 12px; background: #fff; transition: border-color .18s ease, box-shadow .18s ease; }
+.appCard:hover { border-color: #c5d5ed; box-shadow: 0 8px 22px #071a330d; }
+.appIcon { width: 56px; height: 56px; border: 1px solid var(--line); border-radius: 13px; object-fit: cover; }
+.appInfo { min-width: 0; }
+.appInfo h3 { margin: 0; overflow: hidden; color: var(--navy); font-size: 14px; font-weight: 600; text-overflow: ellipsis; white-space: nowrap; }
+.appInfo p { margin: 4px 0 7px; color: var(--muted); font-size: 11px; line-height: 1.55; }
+.appMeta { color: #708099; font-size: 10px; font-weight: 500; }
+.actions { display: flex; flex-direction: column; align-items: stretch; gap: 7px; }
+.installAction { display: flex; flex-direction: column; align-items: stretch; gap: 5px; }
+.installButton { display: inline-flex; min-height: 39px; align-items: center; justify-content: center; gap: 7px; padding: 0 13px; border: 1px solid var(--blue); border-radius: 9px; color: #fff; background: var(--blue); font: inherit; font-size: 11px; font-weight: 600; white-space: nowrap; cursor: pointer; transition: background .18s ease, border-color .18s ease, transform .18s ease; }
+.installButton:hover:not(:disabled) { transform: translateY(-1px); border-color: var(--blue-dark); background: var(--blue-dark); }
+.installButton:disabled { cursor: wait; opacity: .72; }
+.secondaryInstall { border-color: #cfdaea; color: var(--navy); background: #f6f8fc; }
+.secondaryInstall:hover:not(:disabled) { border-color: #bacbe2; color: var(--navy); background: #eef3fa; }
+.installButton:focus-visible, .openLink:focus-visible { outline: 3px solid #1769ff45; outline-offset: 3px; }
+.openLink { display: inline-flex; min-height: 28px; align-items: center; justify-content: center; gap: 5px; color: var(--navy); font-size: 10px; font-weight: 600; }
+.installNote { min-height: 14px; color: #708099; font-size: 9px; line-height: 1.4; text-align: center; }
+.emptyState { display: grid; min-height: 135px; margin: 0; place-items: center; color: var(--muted); font-size: 12px; text-align: center; }
+
+@media (max-width: 760px) { .platformGrid { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 520px) {
+  .container { width: min(100% - 32px, 1120px); }
+  .intro { margin-bottom: 24px; }
+  .platformPanel { padding: 18px; }
+  .appCard { grid-template-columns: 48px minmax(0, 1fr); gap: 11px; padding: 12px; }
+  .appIcon { width: 48px; height: 48px; }
+  .actions { grid-column: 1 / -1; flex-direction: row; align-items: center; }
+  .installButton { flex: 1; }
+  .openLink { padding: 0 12px; }
+}
