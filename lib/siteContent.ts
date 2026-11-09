@@ -67,6 +67,42 @@ export type SiteNews = {
   notices: SiteNotice[];
 };
 
+const ABOUT_MESSAGE_PATHS: Record<string, string> = {
+  "principals-message": "/about/principals-message",
+  "chairman-message": "/about/chairman-message",
+};
+
+/**
+ * Returns the published leadership message override from the existing page
+ * sections CMS table. Static about-page content remains the fallback until
+ * an administrator saves a CMS message.
+ */
+export async function getLeadershipMessage(slug: string): Promise<string[] | null> {
+  const pagePath = ABOUT_MESSAGE_PATHS[slug];
+  const supabase = getPublicClient();
+  if (!pagePath || !supabase) return null;
+
+  try {
+    const { data, error } = await supabase
+      .from("site_page_sections")
+      .select("body")
+      .eq("page_path", pagePath)
+      .eq("is_published", true)
+      .order("display_order", { ascending: true })
+      .limit(1)
+      .maybeSingle();
+
+    if (error || typeof data?.body !== "string" || !data.body.trim()) return null;
+
+    return data.body
+      .split(/\n{2,}/)
+      .map((paragraph) => paragraph.trim())
+      .filter(Boolean);
+  } catch {
+    return null;
+  }
+}
+
 /** News the site shows before any CMS data exists, mirroring app/news/page.tsx. */
 const fallbackNews: SiteNews = {
   items: [

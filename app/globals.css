@@ -58,7 +58,8 @@ button{cursor:pointer}
 .nav-trigger svg{color:var(--ink);transition:transform .18s}
 .nav-trigger svg.is-rotated{transform:rotate(180deg)}
 .navlinks .nav-trigger:after,.navlinks .mobile-subnav a:after{display:none}
-.nav-menu-item.is-active .nav-trigger{color:#fff}
+.nav-menu-item.is-active .nav-trigger{color:var(--blue)}
+.nav-menu-item.is-active .nav-trigger svg{color:var(--blue)}
 .mobile-subnav{display:none}
 .mega-layer{z-index:2;visibility:hidden;opacity:0;pointer-events:none;transition:opacity .18s,transform .18s,visibility 0s linear .18s;position:absolute;top:100%;left:0;right:0;transform:translateY(-8px)}
 .mega-layer.is-open{visibility:visible;opacity:1;pointer-events:auto;transition:opacity .18s,transform .18s,visibility;transform:translateY(0)}

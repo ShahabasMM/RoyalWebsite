@@ -3,6 +3,9 @@ import { notFound } from "next/navigation";
 import InnerPage, { type InnerPageData } from "@/components/InnerPage";
 import { aboutPages } from "@/content/aboutPages";
 import { breadcrumbJsonLd, descriptionFrom, pageMetadata } from "@/lib/seo";
+import { getLeadershipMessage } from "@/lib/siteContent";
+
+export const dynamic = "force-dynamic";
 
 type PageParams = {
   params: Promise<{ slug: string }>;
@@ -41,5 +44,8 @@ export default async function AboutDestination({ params }: PageParams) {
     notFound();
   }
 
-  return <InnerPage data={page} crumbs={[{ name: "About", path: "/about/about-college" }]} />;
+  const message = await getLeadershipMessage(slug);
+  const pageData = message ? { ...page, body: message } : page;
+
+  return <InnerPage data={pageData} crumbs={[{ name: "About", path: "/about/about-college" }]} />;
 }
