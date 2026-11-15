@@ -1,3 +1,4 @@
+import "server-only";
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 
 import { safeHref } from "./safeHref";
@@ -495,17 +496,58 @@ type FacultyRow = {
   name: string;
   department: string | null;
   designation: string | null;
+  image: string | null;
 };
+
+function facultyNameKey(value: string) {
+  return value
+    .normalize("NFKD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLocaleLowerCase("en")
+    .replace(/[^a-z0-9]/g, "");
+}
+
+/**
+ * ERP staff photos live in the private staff bucket. Sign only the photos for
+ * faculty already published in the website CMS; never expose staff records or
+ * private storage paths to the browser.
+ */
+async function getPublishedFacultyPhotos(names: string[]): Promise<Map<string, string>> {
+  const photos = new Map<string, string>();
+  const supabase = getPublicClient();
+  if (!supabase || names.length === 0) return photos;
+
+  try {
+    const publicNames = new Set(names.map(facultyNameKey));
+    const { data: paths, error } = await supabase.rpc("get_published_faculty_profile_photos");
+    if (error || !paths?.length) return photos;
+
+    await Promise.all(paths.map(async (row: { faculty_name: string; object_path: string }) => {
+      const nameKey = facultyNameKey(row.faculty_name);
+      if (!publicNames.has(nameKey) || !row.object_path) return;
+      const { data } = await supabase.storage
+        .from("staff-private")
+        .createSignedUrl(row.object_path, 3600);
+      if (data?.signedUrl) photos.set(nameKey, data.signedUrl);
+    }));
+  } catch {
+    // Keep the public faculty page available if signing is temporarily unavailable.
+  }
+
+  return photos;
+}
 
 /** Faculty grouped the way the public page groups them. */
 export async function getFacultyGroups() {
   const rows = await publishedRows<FacultyRow>("site_faculty");
+  const erpPhotos = rows ? await getPublishedFacultyPhotos(rows.map((row) => row.name)) : new Map<string, string>();
 
   const members: SiteFacultyMember[] = rows
     ? rows.map((row) => ({
         name: row.name,
         department: row.department ?? "",
         role: row.designation ?? undefined,
+        image: erpPhotos.get(facultyNameKey(row.name)) ?? row.image ?? undefined,
       }))
     : fallbackFaculty;
 

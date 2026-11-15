@@ -1615,10 +1615,27 @@ h1,h2,h3{overflow-wrap:break-word}
   box-shadow: var(--shadow-sm);
 }
 .ip-fac-avatar {
-  flex: 0 0 auto; width: 56px; height: 56px; border-radius: 50%;
+  box-sizing: border-box;
+  flex: 0 0 56px;
+  width: 56px;
+  min-width: 56px;
+  height: 56px;
+  min-height: 56px;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  border-radius: 50%;
   display: grid; place-items: center;
   background: var(--fac-soft); color: var(--fac);
   font-size: 17px; font-weight: 700; letter-spacing: 0.02em;
+}
+
+.ip-fac-avatar img {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  object-fit: cover;
 }
 .ip-fac-info { min-width: 0; }
 .ip-fac-card h3 {

@@ -73,8 +73,14 @@ export default async function Faculty() {
                       data-hod={member.role ? "true" : undefined}
                       key={`${group.key}-${member.name}`}
                     >
-                      <span className="ip-fac-avatar" aria-hidden="true">
-                        {initials(member.name)}
+                      <span className="ip-fac-avatar">
+                        {member.image ? (
+                          // Signed ERP profile-photo URLs are short-lived and generated server-side.
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img src={member.image} alt={`${member.name} profile`} loading="lazy" />
+                        ) : (
+                          <span aria-hidden="true">{initials(member.name)}</span>
+                        )}
                       </span>
                       <div className="ip-fac-info">
                         <h3>{member.name}</h3>

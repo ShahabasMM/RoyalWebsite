@@ -2,6 +2,7 @@ export type FacultyMember = {
   name: string;
   department: string;
   role?: string;
+  image?: string;
 };
 
 /** Display order of the department groups on the staff page. */
